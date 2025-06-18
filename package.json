@@ -1,0 +1,23 @@
+{
+  "name": "@skinktools/skinkjs",
+  "version": "0.0.1",
+  "description": "Some of Python's most useful built-ins",
+  "main": "src/skink.mjs",
+  "scripts": {
+    "test": "vitest",
+    "doc": "./node_modules/.bin/jsdoc -c jsdoc.json --readme README.md"
+  },
+  "keywords": [
+    "functional",
+    "Python",
+    "port"
+  ],
+  "author": "pushfoo",
+  "devDependencies": {
+    "docdash": "^2.0.2",
+    "jsdoc": "^4.0.4",
+    "vitest": "^2.1.4",
+    "webpack": "^5.99.9",
+    "webpack-cli": "^6.0.1"
+  }
+}

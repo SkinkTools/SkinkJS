@@ -1,0 +1,32 @@
+{
+    "plugins": ["plugins/markdown"],
+    "opts": {
+        "useLongnameInNav": true,
+        "template": "node_modules/docdash"
+    },
+    "source": {
+        "include": ["src"],
+        "exclude": ["node_modules"],
+        "includePattern": ".+\\.(js(doc|x)?|mjs)$",
+        "excludePattern": "((^_)|node_modules/|docs)"
+    },
+    "sourceType": "module",
+    "tags": {
+        "allowUnknownTags": true,
+        "dictionaries": ["jsdoc","closure"]
+    },
+    "templates": {
+        "cleverLinks": true,
+        "monospaceLinks": true
+    },
+    "docdash": {
+        "static": true,
+        "sort": true,
+        "search": true,
+        "collapse": true,
+        "typedefs": true
+    },
+    "readme": "./README.md",
+    "recurse": true
+
+}
