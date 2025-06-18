@@ -1,9 +1,11 @@
 /**
- * @module skinkjs/core/functional/iteration
+ * @module skinkjs/iteration
  *
- * @summary Iteration helper functions for common tasks.
+ * @public
+ * @description
+ * Iteration helper functions for common tasks.
  *
- * @description The helpers in this module are generally composed of:
+ * The helpers in this module are generally composed of:
  *
  * 1. An inner generator function
  * 2. An outer validation wrapper
@@ -19,10 +21,8 @@ function* _asGeneratorInner(iterable) {
 }
 
 /**
- * @summary A generator which will *always* be done.
- * @public
+ * @summary A generator which will *always* be empty.
  * @constant
- * @generator
  *
  */
 export const EMPTY_GENERATOR = (function*() {})();
@@ -30,7 +30,7 @@ export const EMPTY_GENERATOR = (function*() {})();
 
 /**
  * @summary Return a generator over the passed iterable.
- * 
+ *
  * @example
  * // Return a generator over an array
  * const array = [1, 2, 3]
@@ -143,7 +143,7 @@ function* _enumerateGenerator(iterable) {
  * @public
  * @function
  * @summary Return a generator yielding `[index, item]` pairs.
- * 
+ *
  * * Modelled on Python's [`enumerate()`](https://docs.python.org/3.14/library/functions.html#enumerate)
  *   built-in
  * * If you know you will only get arrays, use their [`.entries()`][arr-entries] method
@@ -363,7 +363,11 @@ function* _zipGenerator(iterables, strict = false) {
 /**
  * @public
  * @class
- * @summary A subclass of `RangeError` for when values don't have the same length.
+ * @summary A subclass of [`RangeError`][RangeError] for when values don't have the same length.
+ *
+ * [RangeError]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError
+ * @description
+ * This is raised by {@link module:skinkjs/iteration.zipStrict|zipStrict()} and other {@link module:skinkjs/iteration|skinkjs/iteration} tools
  */
 export class MismatchedLengths extends RangeError {}
 
@@ -372,9 +376,10 @@ export class MismatchedLengths extends RangeError {}
  * @public
  * @summary Get a generator over n-length iterables from n `iterables`.
  *
- * Like [Python's `zip()`](https://docs.python.org/3/library/functions.html#zip)
- * without `strict=False`. For `strict=True`, see the {@link zipStrict} function.
+ * Like [Python's `zip()`][py-zip] without `strict=False`. For `strict=True`,
+ * see the {@link module:skinkjs/iteration.zipStrict|zipStrict()} function.
  *
+ * [py-zip]: https://docs.python.org/3/library/functions.html#zip
  * @example
  * // Prints: ac, be, d
  * for(const pair of zip(['a', 'b', 'c'], ['d', 'e'])) {
@@ -396,14 +401,15 @@ export function zip(...iterables) {
 /**
  * @public
  * @function
- * @summary Like {@link zip}, but it raises an exception if iterables differ in length.
+ * @summary Like {@link module:skinkjs/iteration.zip|zip()} but raises an exception on different iterable lengths.
  *
- * See @see {@link module:skinkjs/core/functional/iteration:zip}
- * if you want looser strictness.
+ * Like [Python's `zip()`](https://docs.python.org/3/library/functions.html#zip)
+ * with `strict=True`. For `strict=False`, see the {@link module:skinkjs/iteration.zip|zip()}
+ * function.
  *
  * @param  {Iterable<Iterable<T>>} iterables 
  * @returns {Generator<Array>} - A generator of n-length arrays.
- * @throws {MismatchedLengths} - A RangeError subclass.
+ * @throws {MismatchedLengths} When iterables differ in length.
  */
 export function zipStrict(...iterables) {
     for(const [i, item] of iterables.entries()) {

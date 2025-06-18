@@ -2,10 +2,10 @@
   "name": "@skinktools/skinkjs",
   "version": "0.0.1",
   "description": "Some of Python's most useful built-ins",
-  "main": "src/skink.mjs",
+  "main": "src/skinkjs.mjs",
   "scripts": {
     "test": "vitest",
-    "doc": "./node_modules/.bin/jsdoc -c jsdoc.json --readme README.md"
+    "doc": "./node_modules/.bin/jsdoc -c jsdoc.json --readme README.md src"
   },
   "keywords": [
     "functional",

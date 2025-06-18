@@ -1,5 +1,5 @@
 /**
- * @module skinkjs/core/functional/operators
+ * @module skinkjs/operators
  * 
  * @summary Operators akin to Python's operator module.
  * 
@@ -48,7 +48,11 @@ export const multiply = (a, b) => a * b;
  */
 export const divide   = (a ,b) => a / b;
 /**
- * @summary `a % b` without wrapping into positive (@see(positiveMod)).
+ * @summary Get the remainder of dividing `a` by `b`.
+ *
+ * For a modulo function which wraps into positive values, see
+ * {@link module:skinkjs/operators.positiveMod|positiveMod()}).
+ *
  * @public
  * @function
  * @param {Number} a
@@ -59,7 +63,9 @@ export const mod      = (a, b) => a % b;
 
 
 /**
- * @summary `%` which wraps back into the positive domain.
+ * @summary `%` which wraps back into the positive domain. For no-wrap, see {@link module:skinkjs/operators.mod|mod()} or [JavaScript's `%`][mdn-mod].
+ *
+ * [mdn-mod]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Remainder
  * @public
  * @function
  * @example

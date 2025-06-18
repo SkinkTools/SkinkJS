@@ -1,4 +1,4 @@
-import { product, range } from "../src/core/functional/iteration.mjs";
+import { product, range } from "../src/iteration.mjs";
 import { NOT_ITERABLES } from "./helpers.mjs";
 
 import {assert, describe, expect, it} from "vitest";

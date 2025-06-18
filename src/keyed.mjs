@@ -1,5 +1,5 @@
 /**
- * @module skinkjs/core/functional/keyed
+ * @module skinkjs/keyed
  * 
  * @summary Import-free helpers for keyed objects (arrays, etc).
  *
