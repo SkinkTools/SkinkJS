@@ -1,12 +1,10 @@
 /**
  * @module skinkjs/operators
  * 
- * @summary Operators akin to Python's operator module.
+ * @description Operators akin to [Python's `operator`][py-op] module.
+ *
  * 
- * It's not a 1-to-1 port because JavaScript:
- *  
- * 1. does not support operator overloading
- * 2. has different naming conventions
+ * [py-op]: https://docs.python.org/3/library/operator.html
  */
 
 
@@ -82,4 +80,19 @@ export function positiveMod(a, b) {
     while(result < 0) result += b;
     return result;
 }
+
+/**
+ * @summary Exposed as `skink.operators` in global scope and holds members below.
+ * 
+ *  
+ * @object
+ */
+export const operators = {
+    add: add,
+    subtract: subtract,
+    multiply: multiply,
+    divide: divide,
+    mod: mod,
+    positiveMod: positiveMod,
+};
 

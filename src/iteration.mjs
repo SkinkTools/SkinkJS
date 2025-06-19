@@ -5,6 +5,21 @@
  * @description
  * Iteration helper functions for common tasks.
  *
+ * If you don't know what a module is, don't worry!
+ * 
+ * The `skink.iteration` export is available via a single-file
+ * include: 
+ * 
+ * ```html
+ * <!-- in your header file -->
+ * <script type="text/javascript" src="scripts/skink.mjs"></script>
+ * 
+ * <!-- Your code does this: -->
+ * <script type="text/javascript">
+ * const { range, zip, product, cycle } = skink.iteration;
+ * </script>
+ * ```
+ *
  * The helpers in this module are generally composed of:
  *
  * 1. An inner generator function
@@ -531,4 +546,22 @@ export function product(...iterables) {
     }
 
     return _productGenerator(digits);
+}
+
+/**
+ * @summary Core functions available via `skink.iteration` globally.
+ *
+ * @object
+ */
+export const iteration = {
+    chain: chain,
+    cycle: cycle,
+    enumerate: enumerate,
+    product: product,
+    range: range,
+    repeat: repeat,
+    zip: zip,
+    zipStrict: zipStrict,
+    EMPTY_GENERATOR: EMPTY_GENERATOR,
+    asGenerator: asGenerator,
 }

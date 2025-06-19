@@ -5,7 +5,8 @@
   "main": "src/skinkjs.mjs",
   "scripts": {
     "test": "vitest",
-    "doc": "./node_modules/.bin/jsdoc -c jsdoc.json --readme README.md src"
+    "doc": "./node_modules/.bin/jsdoc -c jsdoc.json --readme README.md src",
+    "build": "./node_modules/.bin/webpack"
   },
   "keywords": [
     "functional",
@@ -14,7 +15,7 @@
   ],
   "author": "pushfoo",
   "devDependencies": {
-    "docdash": "^2.0.2",
+    "clean-jsdoc-theme": "^4.3.0",
     "jsdoc": "^4.0.4",
     "vitest": "^2.1.4",
     "webpack": "^5.99.9",

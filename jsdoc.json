@@ -2,7 +2,30 @@
     "plugins": ["plugins/markdown"],
     "opts": {
         "useLongnameInNav": true,
-        "template": "node_modules/docdash"
+        "template": "node_modules/clean-jsdoc-theme",
+        "theme_opts": {
+            "idInHeadings": true,
+            "default_theme": "fallback-dark",
+            "homepageTitle": "SkinkJS",
+            "static_dir": ["./static/"],
+            "favicon": "static/skinktools_logo.png",
+            "shouldRemoveScrollbarStyle": false,
+            "title": "<div class='sidebar-section-title title-sidebar'><img class='color-adapt' src='static/skinktools_logo_transparent.png'/><strong>SkinkJS</strong></div>",
+            "menu": [
+                {
+                    "title": "Home",
+                    "link": "/",
+                    "class": "some-class",
+                    "id": "some-id"
+                }
+            ],
+            "include_css": [
+                "static/custom.css"
+            ],
+            "include_js": [
+                "./static/keybinds.js"
+            ]
+        }
     },
     "source": {
         "exclude": ["node_modules"],
@@ -23,7 +46,7 @@
         "sort": false,
         "search": true,
         "collapse": false,
-        "typedefs": true,
+        "typedefs": true
     },
     "readme": "./README.md",
     "recurse": true

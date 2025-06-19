@@ -1,8 +1,11 @@
 /**
  * @module skinkjs/keyed
  * 
- * @summary Import-free helpers for keyed objects (arrays, etc).
+ * @description Helpers for keyed objects (arrays, etc).
  *
+ * These are available at `skink.keyed` if you need external
+ * versions of methods.
+ * 
  */
 
 
@@ -84,4 +87,18 @@ export function deleteIf(object, predicate, key) {
     if(predicate(object)) {
         delete[key];
     }   
+}
+
+/**
+ * Functional keyed object helpers.
+ * 
+ * @object
+ */
+export const keyed = {
+    pop: pop,
+    shift: shift,
+    removeWhen: removeWhen,
+    shiftIf: shiftIf,
+    popIf: popIf,
+    deleteIf: deleteIf
 }
