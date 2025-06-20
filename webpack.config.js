@@ -3,9 +3,9 @@ const webpack = require("webpack");
 
 const skinkVersion = '0.0.1'
 const bannerLines = [
-  `/* skink.js (v${skinkVersion})`,
+  `SkinkJS (v${skinkVersion}, minified)`,
   "By pushfoo  (https://github.com/pushfoo)",
-  "MIT License (https://www.tldrlegal.com/license/mit-license) */"
+  "MIT License (https://www.tldrlegal.com/license/mit-license)"
 ]
   .join('\n');
 
@@ -22,10 +22,10 @@ const config = {
   mode: "production",
   entry : path.resolve(__dirname, "./src/skinkjs.mjs"),
   output : {
-    filename: "skink.js",
+    filename: "skink.min.js",
     path: path.resolve(__dirname, "dist"),
     libraryTarget: "var",
-    library: "skink"
+    library: "skinkjs"
   },
   plugins: [
     new webpack.ProgressPlugin({
@@ -33,10 +33,11 @@ const config = {
           console.info(fmtPercent(percent), message)
         }
     }),
-    new webpack.BannerPlugin({raw: true,
-  banner: bannerLines,
-  stage: webpack.Compilation.PROCESS_ASSETS_STAGE_REPORT})
-  ],
+    new webpack.BannerPlugin({
+      banner: bannerLines,
+      stage: webpack.Compilation.PROCESS_ASSETS_STAGE_REPORT}
+    )
+  ]
 }
 
 module.exports = config;

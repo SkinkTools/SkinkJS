@@ -5,8 +5,8 @@
   "main": "src/skinkjs.mjs",
   "scripts": {
     "test": "vitest",
-    "doc": "./node_modules/.bin/jsdoc -c jsdoc.json --readme README.md src",
-    "build": "./node_modules/.bin/webpack"
+    "build": "./node_modules/.bin/webpack --config webpack.config.js",
+    "doc": "npm run build && ./builddoc.sh"
   },
   "keywords": [
     "functional",

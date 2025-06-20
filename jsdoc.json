@@ -5,6 +5,7 @@
         "template": "node_modules/clean-jsdoc-theme",
         "theme_opts": {
             "idInHeadings": true,
+            "hardwrap": false,
             "default_theme": "fallback-dark",
             "homepageTitle": "SkinkJS",
             "static_dir": ["./static/"],
@@ -40,13 +41,6 @@
     "templates": {
         "cleverLinks": true,
         "monospaceLinks": true
-    },
-    "docdash": {
-        "static": true,
-        "sort": false,
-        "search": true,
-        "collapse": false,
-        "typedefs": true
     },
     "readme": "./README.md",
     "recurse": true
