@@ -107,41 +107,46 @@ There are three major steps we'll cover below:
 
 A local live preview setup will save you a lot of time and pain.
 
-For VS Code users, [Microsft's first-party Live Preview][] extension
-is a popular choice. There are also popular command-line tools in
-various langauges.
+For VS Code users, Microsoft's [Live Preview extension][vs-preview]
+is a popular choice despite being unfinished. There are also popular
+command-line tools in various languages.
 
-Two of the most popular are:
+Two of the most popular language-specific development servers are:
 
 * Python's built-in [`http.server`][py-server]
 * Node's third-party [`http-server`](npm-http-server)
 
-Since Python's is built-in, you only need to run the following once
-Python's installed:
+Since Python [`http.server`][py-server] comes with the language,
+installing Python should be enough to get you both the server and
+Python itself.
 
 ```shell
 python3 -m http.server
 ```
+
 Be sure to turn it off once you're done via <kbd>Ctrl-C</kbd> in the terminal window!
 
 #### Why a Local Preview?
 
-Some features never work correctly from the file system.
+Some features never work correctly when loaded directly from a
+file on a drive (see [CORS: Request not HTTP][mdn-cors]).
 
-This is partly due to various security features. You will also
-avoid all of these common issues if you use a local preview:
+A local preview setup is the easiest way to side-step both
+that issue and many other common troubles, including:
 
-1. waiting for your site to upload
+1. waiting for uploaded content to sync
 2. waiting for your connection or web host to stop being flaky
 3. having to pay to explore building your own APIs and web apps
 
-For example, [neocities][] has developed a strong repuation for
-confusing sync issues which are hard to debug. If you have a local
-test setup, comparing it against the live copy can quickly reveal
-whether it's your code or just neocities being flaky.
+#### Neocities: Extra Flaky
 
-[neocities]: https://neocities.org/
-[live-preview]: https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server
+[Neocities][] has a long-standing issue where pages fail to
+update after upload. A local preview setup will let you quickly
+test whether it's your code or just neocities being flaky again.
+
+[mdn-cors]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS/Errors/CORSRequestNotHttp
+[Neocities]: https://neocities.org/
+[vs-preview]: https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server
 [py-server]: https://docs.python.org/3/library/http.server.html#command-line-interface
 [npm-http-server]: https://www.npmjs.com/package/http-server
 

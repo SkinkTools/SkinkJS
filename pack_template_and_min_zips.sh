@@ -2,6 +2,9 @@
 
 # Make some user zips the quick and dirty way.
 #
+# ASSUMPTIONS:
+# 1. The minification step is run separatel beforehand (npm run build)
+# 2. The 
 # * No grunt, artifact registries, or worse things
 # * Gets us ready and shipped ASAP
 
@@ -46,7 +49,7 @@ MIN_ZIP_PATH="static/template/skink.min.js.zip"
 TEMPLATE_ZIP_PATH="static/template/template.zip"
 
 clean_zip "$TEMPLATE_ZIP_PATH"
-clean_zip "$TEMPLATE_ZIP"
+clean_zip "$MIN_ZIP_PATH"
 
 echo "Building zips"
 
@@ -63,4 +66,4 @@ echo "Out of template dir"
 cd ../..
 
 echo "Building doc"
-./node_modules/.bin/jsdoc -c jsdoc.json --readme README.md src
+

@@ -1,8 +1,10 @@
 {
     "plugins": ["plugins/markdown"],
     "opts": {
+        "recurse": true,
         "useLongnameInNav": true,
         "template": "node_modules/clean-jsdoc-theme",
+        "destination": "docs/",
         "theme_opts": {
             "idInHeadings": true,
             "hardwrap": false,
@@ -11,7 +13,7 @@
             "static_dir": ["./static/"],
             "favicon": "static/skinktools_logo.png",
             "shouldRemoveScrollbarStyle": false,
-            "title": "<div class='sidebar-section-title title-sidebar'><img class='color-adapt' src='static/skinktools_logo_transparent.png'/><strong>SkinkJS</strong></div>",
+            "title": "<a class='sidebar-section-title title-sidebar'><img class='color-adapt' src='static/skinktools_logo_transparent.png'/><strong>SkinkJS</strong></a>",
             "menu": [
                 {
                     "title": "Home",
@@ -21,7 +23,7 @@
                 }
             ],
             "include_css": [
-                "static/custom.css"
+                "./static/custom.css"
             ],
             "include_js": [
                 "./static/keybinds.js"
@@ -29,10 +31,12 @@
         }
     },
     "source": {
-        "exclude": ["node_modules"],
+        "exclude": ["node_modules", "docs", "out"],
+        "include": ["package.json", "README.md", "src"],
         "includePattern": ".+\\.(js(doc|x)?|mjs)$",
-        "excludePattern": "((^_)|node_modules/|docs)"
+        "excludePattern": "((^[_.])|node_modules/|docs)"
     },
+
     "sourceType": "module",
     "tags": {
         "allowUnknownTags": true,

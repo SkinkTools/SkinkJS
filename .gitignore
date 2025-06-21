@@ -1,3 +1,7 @@
 out/
+docs/
 node_modules/
+dist/
 
+static/template/*.zip
+static/template/*.min.js
