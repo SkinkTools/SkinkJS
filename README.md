@@ -54,11 +54,8 @@ helpers for working with page elements:
 ```html
 <!-- 1. Add an include -->
 <script src="skink.min.js" type="text/javascript"></script>
-<h1>Skink Zoo</h1>
 
 <!-- 2. Add some page HTML to populate with JS -->
-<p>Skinks are lizards. They can look like snakes due to their tiny legs.</p>
-<p>Here are the skinks in our zoo:</p>
 <ul id="skinks-ul">
 </ul>
 
@@ -86,8 +83,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 The result will be:
 
-<p>Skinks are lizards. They can look like snakes due to their tiny legs.</p>
-<p>Here are the skinks in our zoo:</p>
 <ul id="skinks-ul">
     <li>1 blue-tailed skink</li>
     <li>2 blue-tongued skinks</li>

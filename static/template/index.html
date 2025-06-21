@@ -23,6 +23,18 @@
         strong { font-weight: 900; }
         a:hover { color: rgb(178, 227, 255); }
         a:visited { color: rgb(148, 98, 167); }
+        #shown { 
+            padding: 1em;
+            margin: 0;
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1em;
+            text-align: center;
+        }
+        #shown > * {
+            background-color: skyblue;
+        }
         input, button { font-size: 100%; }
         button { height: 2em; }
         input[type='range'] { margin: 1em 0;}
@@ -53,9 +65,10 @@
 </ul>
 <p>Fonts are big to make the text nicer for mobile users.</p>
 <h2>Demo Instructions</h2>
-<p>
-Use the number input and button to add / remove entries. 
-</p>
+<ol>
+    <li>Use the range slider to set the desired number of items</li>
+    <li>Press update to change them</li>
+</ol>
 <fieldset>
     <legend>Show...</legend>
     <div class="vertflex">
@@ -64,7 +77,7 @@ Use the number input and button to add / remove entries.
     <button id="show-items" type="button">Update the items!</button>
     </div>
 </fieldset>
-<ul id="target">
+<ul id="shown">
 </ul>
 
 <!-- The "old" way to make a script execute later was to put it at the bottom of a page. -->
@@ -79,20 +92,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Grab our elments.
     const body = document.body;
+    const shown = query('#shown');
     const button = query('button#show-items');
-    const target = query('#target');
     const nItems = query('#n-items');
     const nShown = query('#n-shown');
+    function updateInfoDisplay(nCurrentlyShown, nToShow) {
+        nShown.innerText = `(${nCurrentlyShown.toString()} shown, ${nToShow.toString()} on update)`;
+    }
 
     function showItems() {
         const showN = parseInt(nItems.value);
-        const children = target.children;
+        const children = shown.children;
         const initialNumItems = children.length;
 
         if(initialNumItems < showN) {
             // range(start, cutoff)
             for(const i of range(initialNumItems, showN)) {
-                target.appendChild(tag('li', i.toString()));
+                shown.appendChild(tag('li', i.toString()));
             }
         } else if (initialNumItems > showN) {
             const numToRemove = initialNumItems - showN;
@@ -101,8 +117,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 children[children.length - 1].remove();
             }
         }
-        nShown.innerText = `(${children.length.toString()} shown)`;
+        updateInfoDisplay(children.length, showN); 
     }
+    nItems.addEventListener("input", () => {
+        updateInfoDisplay(shown.children.length , nItems.value);
+    })
     button.addEventListener("click", showItems);
     showItems();
 });
