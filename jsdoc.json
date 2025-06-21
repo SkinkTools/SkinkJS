@@ -13,13 +13,11 @@
             "static_dir": ["./static/"],
             "favicon": "static/skinktools_logo.png",
             "shouldRemoveScrollbarStyle": false,
-            "title": "<a class='sidebar-section-title title-sidebar'><img class='color-adapt' src='static/skinktools_logo_transparent.png'/><strong>SkinkJS</strong></a>",
+            "title": "<div class='sidebar-section-title title-sidebar'><a href='/'><div class='img'></div><strong>SkinkJS</strong></a></div>",
             "menu": [
                 {
                     "title": "Home",
-                    "link": "/",
-                    "class": "some-class",
-                    "id": "some-id"
+                    "link": "/"
                 }
             ],
             "include_css": [
