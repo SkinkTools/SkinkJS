@@ -7,7 +7,7 @@
     "test": "vitest",
     "make-min-js": "./node_modules/.bin/webpack --config webpack.config.js",
     "make-zips": "./pack_template_and_min_zips.sh",
-    "make-html": "./node_modules/.bin/jsdoc -c jsdoc.json --readme README.md",
+    "make-html": "./node_modules/.bin/jsdoc -c jsdoc.json --readme README.md --verbose",
     "clean": "rm -r out && rm -r docs && rm -r dist && rm -r static/*.min.js* && rm -r static/*.zip",
     "doc": "npm run make-min-js && npm run make-zips && npm run make-html"
   },

@@ -1,6 +1,16 @@
 # SkinkJS
 
+<!-- Temp workaround for JsDoc lakcing GitHub Markdown image syntax -->
+
+<a href="https://opensource.org/license/mit"><img src="https://img.shields.io/badge/License-MIT-License.svg"></a>
+<a href="https://github.com/pushfoo/PegboardJS/PegboardJS/actions/workflows/test.yaml?branch=main"><img src="https://github.com/PegboardJS/PegboardJS/actions/workflows/test.yaml/badge.svg?branch=main"></a>
+<a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
+
 Python-inspired helper functions for JavaScript.
+
+<!-- JsDoc does not seem to support callouts so we'll go with this. :( -->
+|️ ⚠️ Version 0.0.1 (Expect rough edges) |
+|--------------------------------------|
 
 ## Not a Framework
 
@@ -26,34 +36,37 @@ There's no compiler or preprocessor. Just import SkinkJS functions to:
 2. make code more readable to beginners and experts
 3. give Python developers an on-ramp for front-end
 
-## How do I use it?
+## Usage Overview
 
 * Experienced developers can use ES6 [modules][]
 * Beginners have a friendly `skink` global
 
-To keep things simple, the template is public domain with **zero** copyright
-or license restrictions ([CC0][]) on the HTML and CSS. See the [live preview][the template] to learn more.
-
-### I'm Impatient! Gimme!
-
-| I want a single `.js` file :D       | I like ES6 modules >:C        |
-|:-----------------------------------:|:-----------------------------:|
-| [Download the template][download]   | Consult the API documentation |
+To keep things simple, the template is public domain with **zero**
+copyright or license restrictions ([CC0][]) on the HTML and CSS. See
+the [live preview][Preview] to learn more.
 
 [CC0]: https://creativecommons.org/publicdomain/zero/1.0/
+[modules]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
 [Preview]: ./static/template/
-[download]: static/template/template.zip
+
+### I'm Impatient
 
 
-## I Want to See More First
+1. [Download the template][template.zip]
+2. Skip to the [Step-by-Step](#step-by-step) guide
 
+### A Concrete Example
 
-JavaScript has clunky syntax for more than just iteration. It also offers
-helpers for working with page elements:
+Here is what the iteration and page element sytnax looks like:
 
 ```html
+<html>
+<head>
+</title>A one-page example</title>
 <!-- 1. Add an include -->
 <script src="skink.min.js" type="text/javascript"></script>
+</head>
+<body>
 
 <!-- 2. Add some page HTML to populate with JS -->
 <ul id="skinks-ul">
@@ -67,18 +80,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const {enumerate} = skink.iteration;
     const {tag, query, nest} = skink.dom;
     
+    // Declare our data and find the element we'll put it into
     const species = ['blue-tailed', 'blue-tongued', 'fire'];
     const skinksList = query('#skinks-ul');
 
+    // Like Python's enumerate function, Skink's enumerate() yields [index, value] pairs
     for(const [i, name] in enumerate(species)) {
-        const numMembers = i + 1;
-        const plural = (i > 1) ? 's' : ''; // Fancy "ternary" if
+        const numSkinks = i + 1;
+        // Add an 's' if we have more than two skinks
+        const plural = (numSkinks < 2)
+            ? ''  // Fewer than 2
+            : 's' // 2 or more!
         nest(skinksList,
             tag('li', `${numMembers} ${name} skink${plural}`);
         );
     }
 });
 </script>
+<body>
+<html>
 ```
 
 The result will be:
@@ -89,9 +109,19 @@ The result will be:
     <li>3 fire skinks</li>
 </ul>
 
+<span id="step-by-step"></span>
+
 ## Step-by-Step
 
-There are three major steps we'll cover below:
+| ℹ️ This guide caters to beginners                                                                                        |
+|--------------------------------------------------------------------------------------------------------------------------|
+| It assumes you want a one-file `<script></script>` tag. Fans of ES6 modules may want to install from [the GitHub repo][] |
+
+[the GitHub repo]: https://github.com/Skinktools/SkinkJS
+
+If you don't know or care what an ES6 module is, you're in the right place.
+
+We'll cover these steps below:
 
 1. A local live preview
 2. Getting SkinkJS via the template or a `<script>` tag
@@ -109,7 +139,7 @@ command-line tools in various languages.
 Two of the most popular language-specific development servers are:
 
 * Python's built-in [`http.server`][py-server]
-* Node's third-party [`http-server`](npm-http-server)
+* Node's third-party [`http-server`][npm-http-server]
 
 Since Python [`http.server`][py-server] comes with the language,
 installing Python should be enough to get you both the server and
@@ -121,10 +151,10 @@ python3 -m http.server
 
 Be sure to turn it off once you're done via <kbd>Ctrl-C</kbd> in the terminal window!
 
-#### Why a Local Preview?
+#### Why Local Previews Are Important
 
 Some features never work correctly when loaded directly from a
-file on a drive (see [CORS: Request not HTTP][mdn-cors]).
+file on a drive (see [CORS: Request not HTTP][MDN-cors]).
 
 A local preview setup is the easiest way to side-step both
 that issue and many other common troubles, including:
@@ -139,7 +169,7 @@ that issue and many other common troubles, including:
 update after upload. A local preview setup will let you quickly
 test whether it's your code or just neocities being flaky again.
 
-[mdn-cors]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS/Errors/CORSRequestNotHttp
+[MDN-cors]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS/Errors/CORSRequestNotHttp
 [Neocities]: https://neocities.org/
 [vs-preview]: https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server
 [py-server]: https://docs.python.org/3/library/http.server.html#command-line-interface
@@ -208,7 +238,6 @@ Start by:
 
 The details are covered in the sections below.
 
-[modules]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
 [p5.js]: https://p5js.org/
 
 ### 3. Unpack the helpers you want

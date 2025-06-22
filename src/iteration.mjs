@@ -2,28 +2,21 @@
  * @module skinkjs/iteration
  *
  * @public
- * @description
+ * @description # Iteration
+ *
  * Iteration helper functions for common tasks.
  *
- * If you don't know what a module is, don't worry!
- * 
- * The `skink.iteration` export is available via a single-file
- * include: 
- * 
- * ```html
- * <!-- in your header file -->
- * <script type="text/javascript" src="scripts/skink.mjs"></script>
- * 
- * <!-- Your code does this: -->
- * <script type="text/javascript">
- * const { range, zip, product, cycle } = skink.iteration;
- * </script>
- * ```
+ * | ℹ️ [Step-by-step instructions](../#step-by-step) are available for users new to HTML or JavaScript. |
+ * |:---------------------------------------------------------------------------------------------------:|
+ *
+ * ## Technical Overview
  *
  * The helpers in this module are generally composed of:
  *
  * 1. An inner generator function
  * 2. An outer validation wrapper
+ *
+ * The functions you call return the generator after validating input.
  *
  */
 

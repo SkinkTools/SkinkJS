@@ -8,16 +8,21 @@
         "theme_opts": {
             "idInHeadings": true,
             "hardwrap": false,
+            "base_url": "https://skinktools.github.io/skinkjs/[version]",
             "default_theme": "fallback-dark",
             "homepageTitle": "SkinkJS",
             "static_dir": ["./static/"],
             "favicon": "static/skinktools_logo.png",
             "shouldRemoveScrollbarStyle": false,
-            "title": "<div class='sidebar-section-title title-sidebar'><a href='/'><div class='img'></div><strong>SkinkJS</strong></a></div>",
+            "title": "<div class='sidebar-section-title title-sidebar'><a href='/skinkjs/0.0.1/'><div class='img'></div><strong>SkinkJS</strong></a></div>",
             "menu": [
                 {
                     "title": "Home",
-                    "link": "/"
+                    "link": "https://skinktools.github.io/skinkjs/0.0.1/"
+                },
+                {
+                    "title": "Step-by-Step Guide",
+                    "link": "https://skinktools.github.io/skinkjs/0.0.1/#step-by-step"
                 }
             ],
             "include_css": [
@@ -34,7 +39,6 @@
         "includePattern": ".+\\.(js(doc|x)?|mjs)$",
         "excludePattern": "((^[_.])|node_modules/|docs)"
     },
-
     "sourceType": "module",
     "tags": {
         "allowUnknownTags": true,

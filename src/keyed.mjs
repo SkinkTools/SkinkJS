@@ -1,7 +1,12 @@
 /**
  * @module skinkjs/keyed
  * 
- * @description Helpers for keyed objects (arrays, etc).
+ * @description # Keyed Access
+ *
+ * Helpers for keyed objects (arrays, etc).
+ *
+ * | ℹ️ [Step-by-step instructions](../#step-by-step) are available for users new to HTML or JavaScript. |
+ * |:---------------------------------------------------------------------------------------------------:|
  *
  * These are available at `skink.keyed` if you need external
  * versions of methods.

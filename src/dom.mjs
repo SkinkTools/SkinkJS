@@ -1,14 +1,23 @@
 /**
  * @module skinkjs/dom
  *
- * @description DOM query and creation helpers.
+ * @description # Document Object Model (DOM)
+ *
+ * Tools to help find and create page elements (HTML, etc).
+ *
+ * | ℹ️ [Step-by-step instructions](../#step-by-step) are available for users new to HTML or JavaScript. |
+ * |:---------------------------------------------------------------------------------------------------:|
+ *
+ * ## What's a DOM?
+ * The "Document Object Model" is all of the HTML tags and
+ * other elements like ``::after`` or list bullet points.
  *
  * If you're confused, don't worry. The following pages will help
  * explain:
  * 
  * 1. [What is the HTML DOM?][w3-dom] (w3schools)
  * 2. [The Document Object Model (DOM)][MDN-dom] (MDN)
- * 
+ *
  * [w3-dom]: https://www.w3schools.com/whatis/whatis_htmldom.asp
  * [MDN-dom]: https://developer.mozilla.org/en-US/docs/Glossary/DOM
  *
@@ -22,12 +31,12 @@
  * **Example**
  * 
  * ```javascript
- * const query = skink.dom.query;
+ * const {query} = skink.dom;
  *
  * const specialNode = query('#special-id');
  *
  * if(titleHeading === null) {
- *   console.log('Couldn't find #special-id!');
+ *   console.log("Couldn't find #special-id!");
  * }
  * ``` 
  *
@@ -53,7 +62,7 @@ export function query(selector, root = document) {
  * **Example**
  *
  * ```javascript
- * const resolve = skink.dom.resolve;
+ * const {resolve} = skink.dom;
  *
  * const titleHeading = resolve('h1');
  *
@@ -125,7 +134,11 @@ export function appendAll(parent, newChildren) {
  * Attempt to nest the given elements within an existing node or query result.
  *
  * **Example**
- *
+ * If we have the following HTML:
+ * ```HTML
+ * <ul id="results-list"></ul>
+ * ```
+ * This JavaScript code will populate the list with cat and dog item.
  * ```javascript
  * const {nest, tag} = skink.dom;
  *  
@@ -133,6 +146,13 @@ export function appendAll(parent, newChildren) {
  *  tag('li', 'cat'),
  *  tag('li', 'dog')
  * ]);
+ * ```
+ * The result will be equivalent to this HTML:
+ * ```HTML
+ * <ul id="results-list">
+ *      <li>cat</li>
+ *      <li>dog</li>
+ * </ul>
  * ```
  * 
  * @param {string|T} elementOrSelector An HTML element or query.
@@ -159,16 +179,17 @@ export function nest(elementOrSelector, iterableOrCallable) {
  * ```javascript 
  * // Usage in non-module form from skink.min.js
  * const {tag, appendAll} = skink.dom;
- * 
- * const tags = [
- *  // Create an empty tag. 
- *  tag('h1', 'Title here'),
  *
- *  // Create a paragraph with nested values.
- *  tag('p', [
+ * const tags = [
+ *   // Create a title tag with only text inside.
+ *   tag('h1', 'Title here'),
+ *
+ *   // Create a paragraph with nested values.
+ *   tag('p', [
  *      text('Multiple values are '),
  *      tag('strong', 'permitted!')
- * ]);
+ *   ])
+ * ];
  * 
  * // Remember to append the elements to show them!
  * appendAll(document.body, tags);
@@ -202,6 +223,18 @@ export function tag(name, contents = null) {
  * The {@link module:skinkjs/dom.copyElementHTMLToClipboard|copyElementHTMLToClipboard}
  * function may be of use if you need to get started quickly.
  *
+ * **Example**
+ *
+ * ```javascript
+ * const {getElementHTML} = skink.dom;
+ *
+ * function alertSourceFor(eltOrQuery) {
+ *     const src = getElementHTML(eltOrQuery);
+ *     alert(`Source for ${JSON.stringify(eltOrQuery)}\n${src}`);
+ * }
+ *
+ * alertSourceFor('#your-id-here');
+ * ```
  * **Tip**
  * 
  * This function may begin replacing characters in attributes
@@ -246,13 +279,36 @@ export function getElementHTML(eltOrQuery) {
 /**
  * Attempt to copy the source of a given element or query selector result to the clipboard.
  *
- * **⚠️ Warning: Experimental!**
+ * **⚠️ Experimental**
  * 
  * This *may* do the following in the near future:
  * 
  * * fail with exceptions
  * * replace the `<` and `>` characters in attributes (see {@link module:skinkjs/dom.getElementHTML|getElementHTML})
  *
+ * **Example**
+ *
+ * ```javascript
+ * document.addEventListener("DOMContentLoaded", {
+ *      const {copyElementHTMLToClipboard, query} = skink.dom;
+ *      const buttonArea = query('#buttons');
+ *
+ *      // This is called a "delegated" event listener:
+ *      // * The #buttons container handles click events for buttons inside it
+ *      // * This is more efficient than putting a handler on every button
+ *      buttonArea.addEventListener("click", (e) => {
+ *          const target = e.target;
+ *          if(! target.classList.contains("button")) {
+ *              return;
+ *          } else {
+ *              copyElementHTMLToClipboard(button);
+ *
+ *              // You may want to replace with nicer UI
+ *              alert("Copied button!");
+ *          }
+ *      });
+ * });
+ * ```
  * @param {string|Node} elementOrSelector An element or selector.
  */
 export async function copyElementHTMLToClipboard(elementOrSelector) {
@@ -271,9 +327,3 @@ export const dom = {
     getElementHTML: getElementHTML,
     copyElementHTMLToClipboard: copyElementHTMLToClipboard
 }
-
-// nest(
-//     tag('ul'), ['a', 'b', 'c'].map(
-//         (t) => tag('li', t)
-//     )
-// );

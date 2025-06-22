@@ -1,9 +1,13 @@
 /**
  * @module skinkjs/operators
  * 
- * @description Operators akin to [Python's `operator`][py-op] module.
+ * @description # Operators
  *
- * 
+ * Operators akin to [Python's `operator`][py-op] module.
+ *
+ * | ℹ️ [Step-by-step instructions](../#step-by-step) are available for users new to HTML or JavaScript. |
+ * |:---------------------------------------------------------------------------------------------------:|
+ *
  * [py-op]: https://docs.python.org/3/library/operator.html
  */
 
