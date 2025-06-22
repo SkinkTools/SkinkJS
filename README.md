@@ -3,7 +3,7 @@
 <!-- Temp workaround for JsDoc lakcing GitHub Markdown image syntax -->
 
 <a href="https://opensource.org/license/mit"><img src="https://img.shields.io/badge/License-MIT-License.svg"></a>
-<a href="https://github.com/pushfoo/PegboardJS/PegboardJS/actions/workflows/test.yaml?branch=main"><img src="https://github.com/PegboardJS/PegboardJS/actions/workflows/test.yaml/badge.svg?branch=main"></a>
+<a href="https://github.com/SkinkTools/SkinkJS/actions/workflows/test.yaml?branch=main"><img src="https://github.com/SkinkTools/SkinkJS/actions/workflows/test.yaml/badge.svg?branch=main"></a>
 <a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
 
 Python-inspired helper functions for JavaScript.
