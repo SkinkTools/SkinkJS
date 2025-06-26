@@ -1,7 +1,14 @@
+# Local dirs / files
+!.gitignore
+!.github
+.*
+node_modules/
+
+# General build dirs
 out/
 docs/
-node_modules/
 dist/
 
+# Specific dynamically generated files
 static/template/*.zip
 static/template/*.min.js
