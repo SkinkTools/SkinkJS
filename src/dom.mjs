@@ -78,7 +78,7 @@ export function query(selector, root = document) {
 export function resolve(elementOrSelector, root = document) {
     let element = null;
     if(elementOrSelector) {
-        if('tagName' in elementOrSelector) {
+        if(elementOrSelector['tagName'] !== undefined) {
             if(! Object.is(root, document)) {
                 throw new RangeError(
                     `Cannot run an element (${JSON.stringify(elementOrSelector)}) as a query against node ${JSON.stringify(root)}`);
@@ -164,7 +164,7 @@ export function nest(elementOrSelector, iterableOrCallable) {
     const iterable = (typeof iterableOrCallable === 'function')
         ? iterableOrCallable(elementOrSelector)
         : iterableOrCallable;
-    if(! Symbol.iterator in iterable) throw new TypeError(`Could not resolve iterable for ${JSON.stringify(iterableOrCallable)}`);
+    if(! hasSymbolIterator(iterable)) throw new TypeError(`Could not resolve iterable for ${JSON.stringify(iterableOrCallable)}`);
     appendAll(element, iterable);
 
     return element;
@@ -203,12 +203,13 @@ export function tag(name, contents = null) {
     const element = document.createElement(name);
     if(contents !== null) {
         if(typeof contents === 'string') {
-            element.appendChild(text(contents));
+            element.appendChild(document.createTextNode(contents));
         }
-        else if(('tagName' in contents) || Object.is(contents.constructor, Text)) {
+        else if(contents instanceof Element) {
             element.appendChild(contents);
         }
-        else if (Symbol.iterator in contents) {
+        // inlined for speed
+        else if (contents[Symbol.iterator] !== undefined) {
             appendAll(element, contents)
         } else {
             throw TypeError(`Unexpected contents value: ${JSON.stringify(contents)} is not a string, Text, or iterable of nodes.`);
@@ -264,7 +265,7 @@ export function getElementHTML(eltOrQuery) {
     if(! elt) {
       problem.type = ReferenceError;
       problem.reason = `Could not resolve a node for ${JSON.stringify(eltOrQuery)}`;
-    } else if (! ('outerHTML' in elt)) {
+    } else if (elt['outerHTML'] === undefined) {
       problem.type = Error;
       problem.reason = 'Failed to read outerHTML';
     }

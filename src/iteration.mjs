@@ -35,7 +35,14 @@ function* _asGeneratorInner(iterable) {
  */
 export const EMPTY_GENERATOR = (function*() {})();
 
-function isIterable(iterable) {
+/**
+ * Convenience function to check whether something is iterable.
+ *
+ *
+ * @param {*} iterable An item to check for `Symbol.iterator` presence.
+ * @returns {boolean} Whether the item is iterable.
+ */
+export function hasSymbolIterator(iterable) {
     return ! (
             (iterable === undefined)
             || (iterable === null)
@@ -58,7 +65,7 @@ function isIterable(iterable) {
  * @returns {Generator<T>} A generator over the iterable.
  */
 export function asGenerator(iterable) {
-    if(! isIterable(iterable)) {
+    if(! hasSymbolIterator(iterable)) {
         throw new TypeError(`No Symbol.iterator on ${JSON.stringify(iterable)}`);
     } else if (('length' in iterable) && (iterable.length === 0)) {
         return EMPTY_GENERATOR;
@@ -178,7 +185,7 @@ function* _enumerateGenerator(iterable) {
  * @returns {Generator<Array<Number, T>>} A generator yielding `[index, value]` pairs.
  */
 export function enumerate(iterable) {
-    if(! isIterable(iterable) ) throw new TypeError(
+    if(! hasSymbolIterator(iterable) ) throw new TypeError(
         `${JSON.stringify(iterable)} lacks a Symbol.iterator value`
     )
     return _enumerateGenerator(iterable);
@@ -217,7 +224,7 @@ function* _chainGenerator(iterables) {
  */
 export function chain(...iterables) {
     for(const [i, iterable] of iterables.entries()) {
-        if(!isIterable(iterable)) {
+        if(!hasSymbolIterator(iterable)) {
             throw new TypeError(`${i}th value does not appear iterable ${JSON.stringify(iterable) }`);
         }
     }
@@ -277,7 +284,7 @@ function* _cycleGen(iterable) {
  * @returns {Generator<T>} A generator repeating the passed values forever.
  */
 export function cycle(iterable) {
-    if(! isIterable(iterable)) {
+    if(! hasSymbolIterator(iterable)) {
         throw new TypeError(`cycle expects an iterable, but got ${JSON.stringify(iterable)}`);
     }
     return new _cycleGen(iterable);
@@ -319,7 +326,7 @@ function* _repeatGenerator(iterable, n) {
  * @returns {Generator<T>} A generator repeating `iterable`'s values `n` times.
  */
 export function repeat(iterable, n) {
-    if(!isIterable(Symbol.iterator)) {
+    if(!hasSymbolIterator(Symbol.iterator)) {
         throw new TypeError(`iterable is not an iterable`);
     }
     const problem = null;
@@ -404,7 +411,7 @@ export class MismatchedLengths extends RangeError {}
  */
 export function zip(...iterables) {
     for(const [i, iterable] of iterables.entries()) {
-        if (! isIterable(iterable)) throw TypeError(
+        if (! hasSymbolIterator(iterable)) throw TypeError(
             `argument ${i} does not appear to be iterable: ${iterable}`);
     }
     return _zipGenerator(iterables)
@@ -426,7 +433,7 @@ export function zip(...iterables) {
  */
 export function zipStrict(...iterables) {
     for(const [i, item] of iterables.entries()) {
-        if (!isIterable(item)) throw TypeError(
+        if (!hasSymbolIterator(item)) throw TypeError(
             `argument ${i} does not appear to be iterable: ${item}`);
     }
     return _zipGenerator(iterables, true)
@@ -533,9 +540,10 @@ function* _productGenerator(iterables) {
 export function product(...iterables) {
     if(iterables.length === 0) return EMPTY_GENERATOR;
 
-    // Convert the iterables do dial-like automodulo-ing helpers 
+    // Convert the iterables to dial-like automodulo-ing helpers
     const digits = [];
     for(const [i, iterable] of iterables.entries()) {
+        // inlined for speed
         if ((iterable === undefined)
             || (iterable === null)
             || (typeof iterable[Symbol.iterator] !== 'function')
@@ -565,4 +573,5 @@ export const iteration = {
     zipStrict: zipStrict,
     EMPTY_GENERATOR: EMPTY_GENERATOR,
     asGenerator: asGenerator,
+    hasSymbolIterator: hasSymbolIterator,
 }
