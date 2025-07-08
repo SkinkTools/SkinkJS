@@ -1,24 +1,42 @@
 /**
- * Check & sync README.md against package.json's version.
+ * Check & sync files against package.json's version.
  *
- * Usage:
- * | Action                            | Command                 |
- * |-----------------------------------|-------------------------|
- * | Check (no changes written)        | `npm run version-check` |
- * | Sync (write changes to README.md) | `npm run version-sync`  |
- * 
+ * ### Usage
+ *
+ * | Action                                 | Command                 |
+ * |----------------------------------------|-------------------------|
+ * | Check (no changes written)             | `npm run version-check` |
+ * | Sync (write to README.md / jsdoc.json) | `npm run version-sync`  |
+ *
  * These pass `check` and `sync` as the first arg of this script.
- * Yes, it's brittle, but it's *very* colorful.
+ *
+ * ### TODO
+ *
+ * This thing is a brittle workaround which may need to be replaced.
+ * It exists because JsDoc and the current theme don't listen to the
+ * version config values.
+ *
  */
 
-const path = require('path');
+const {resolve} = require('path');
 const fs = require('fs');
 
+// TODO: replace the theme or JsDoc entirely (nastiest stuff ever here D:>)
+TARGETS = [
+    {
+        path: resolve(__dirname, '../README.md'),
+        pattern: /Version ([0-9]+\.[0-9]+\.[0-9]+)/g
+    },
+    {
+        path: resolve(__dirname, "../jsdoc.json"),
+        pattern: /\/skinkjs\/([0-9]+\.[0-9]+\.[0-9]+)/g
+    }
+];
+
+
 // Brittle but we'll get there when we need to. :)
-const package = require(path.resolve(__dirname, "../package.json"));
+const package = require(resolve(__dirname, "../package.json"));
 const {version} = package;
-const VERSION_RE = /Version ([0-9]+\.[0-9]+\.[0-9]+)/;
-const README_PATH = path.resolve(__dirname, '../README.md');
 
 // Some styling spaghetti while we learn more about the state of Node's console
 const DEFAULT = 0; // Resets all to default
@@ -55,57 +73,93 @@ function color(color, ...values) {
 }
 
 
-let action = null;
-
-const args = process.argv.slice(2);
-if(args.length === 1) {
-    switch(args[0]) {
-        case "check":
-        case "sync":
-            action = args[0]; break;
-        default:
-    }
-}
-if(! action) {
-    console.error(color(FG.RED, 
-        'ERROR: Use exactly one of \'check\' or \'sync\''));
-    process.exit(-1);
-}
-
-// Grab data
-const readme = fs.readFileSync(README_PATH, 'utf8');
-const match = readme.match(VERSION_RE);
-if(! match) {
-    console.error(color(BAD,`CRITICAL: failed to find version in README.md?`))
-    process.exit(-1);
-}
-const [readMeVerFull, readmeVerOnly] = match;
-
-// Actually do something with it
-if(version !== readmeVerOnly) {
-    if(action === 'sync') {
-        console.log(`SYNC: Replacing ${readmeVerOnly} with ${version}!`);
-        const fullReplaced = readMeVerFull.replace(readmeVerOnly, version);
-        const replaced = readme.replace(readMeVerFull, fullReplaced);
-        fs.writeFileSync(README_PATH, replaced);
-        console.log(color({fg: FG.WHITE, bg: BG.GREEN}, `DONE: Replaced version with ${version}!`));
-    } else {
-        console.log([
-            color(FG.RED,   `ERROR: ${readmeVerOnly} DIFFERS from ${version}!`),
-            // Important: tell beginners how to fix this
-            color(FG.YELLOW, [
-            `# *May* be fixed by:`,
-            `# Command            | Comment`,
-            `npm run version-sync  # Sync REAMDE.md to package.json`,
-            `git add README.md     # Add to git`,
-            `git commit            # Add interactive git commit`,
-            `git push              # Push your branch`
-            ].join("\n"))
-        ].join('\n'));
+function syncFile(action, {path, pattern, version = version} = {}) {
+    // Grab data
+    const fileText = fs.readFileSync(path, 'utf8');
+    const matches = [...fileText.matchAll(pattern)];
+    if(! matches.length) {
+        console.error(color(BAD,`CRITICAL: failed to find version in ${JSON.stringify(path)}`));
         process.exit(-1);
     }
+    let isOk = true;
+    let replaced = 0;
+    for(const [fileVerFull, fileVerOnly] of matches) {
+        if(version !== fileVerOnly) {
+            if(action === 'sync') {
+                console.log(`SYNC: Replacing ${fileVerOnly} with ${version}!`);
+                const fullReplaced = fileVerFull.replace(fileVerOnly, version);
+                const replaced = fileText.replace(fileVerFull, fullReplaced);
+                fs.writeFileSync(path, replaced);
+                replaced += 1;
+                console.log(color(FG.GREEN, `DONE: Replaced version with ${version}!`));
+            } else {
+                isOk = false;
+            }
+        }
+    }
+    if(replaced === 0) {
+        const word = action === 'sync' ? 'SKIP' : 'OKAY';
+        console.log(color(FG.GREEN, `${word}: ${path} already up to date`));
+    }
+    return {path, status: isOk};
 }
 
-else {
-    console.log(color(FG.GREEN, `SKIP: ${version} already in README.md`));
+function main(argv = process.argv) {
+    let action = null;
+    let allOk = true;
+    if(argv.length === 3) {
+        const maybeAction = argv[2];
+        switch(maybeAction) {
+            case "check":
+            case "sync":
+                action = maybeAction;
+            default:
+                break;
+        }
+    }
+    if(! action) {
+        console.error(color(
+            FG.RED, 'ERROR: Use exactly one of \'check\' or \'sync\''));
+        process.exit(-1);
+    }
+    const results = [];
+    function recordResult(result) {
+        results.push(result);
+        allOk &= result.status;
+    }
+    for(const config of TARGETS) {
+        recordResult(syncFile(action, {...config, version}));
+    }
+    if(allOk) {
+        console.log(
+            color({fg: FG.WHITE, bg: BG.GREEN}, `GOOD: All files synced!`));
+    } else {
+        console.log(
+            color(
+                FG.RED,
+                `ERROR: ${path} ${fileVerOnly} DIFFERS from ${version}!`
+            )
+        );
+
+        // Important: tell beginners how to fix this
+        const tips = [
+            `# *May* be fixed by:`,
+            `# Command            | Comment`,
+            `npm run version-sync  # Sync files to package.json`
+        ];
+        for(const {status, result} of results) {
+            if(status) continue;
+            tips.push(`git add ${r.path}`);
+        }
+        tips.push(`git commit           # Add interactive git commit`);
+        tips.push(`git push             # Push your branch`);
+        console.error(color(FG.YELLOW, tips.join("\n")));
+    }
 }
+
+main();
+
+
+
+
+

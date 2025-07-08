@@ -14,15 +14,15 @@
             "static_dir": ["./static/"],
             "favicon": "static/skinktools_logo.png",
             "shouldRemoveScrollbarStyle": false,
-            "title": "<div class='sidebar-section-title title-sidebar'><a href='/skinkjs/0.0.1/'><div class='img'></div><strong>SkinkJS</strong></a></div>",
+            "title": "<div class='sidebar-section-title title-sidebar'><a href='/skinkjs/0.0.2/'><div class='img'></div><strong>SkinkJS</strong></a></div>",
             "menu": [
                 {
                     "title": "Home",
-                    "link": "https://skinktools.github.io/skinkjs/0.0.1/"
+                    "link": "https://skinktools.github.io/skinkjs/0.0.2/"
                 },
                 {
                     "title": "Step-by-Step Guide",
-                    "link": "https://skinktools.github.io/skinkjs/0.0.1/#step-by-step"
+                    "link": "https://skinktools.github.io/skinkjs/0.0.2/#step-by-step"
                 }
             ],
             "include_css": [
@@ -34,7 +34,7 @@
         }
     },
     "source": {
-        "exclude": ["node_modules", "docs", "out"],
+        "exclude": ["node_modules", "docs", "out", "util"],
         "include": ["package.json", "README.md", "src"],
         "includePattern": ".+\\.(js(doc|x)?|mjs)$",
         "excludePattern": "((^[_.])|node_modules/|docs)"
