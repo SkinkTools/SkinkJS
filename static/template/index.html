@@ -96,8 +96,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const button = query('button#show-items');
     const nItems = query('#n-items');
     const nShown = query('#n-shown');
+
     function updateInfoDisplay(nCurrentlyShown, nToShow) {
-        nShown.innerText = `(${nCurrentlyShown.toString()} shown, ${nToShow.toString()} on update)`;
+        const nShownStr = nCurrentlyShown.toString();
+        const nToShowStr = nToShow.toString();
+        nShown.innerText = `(${nShownStr} shown, ${nToShowStr} on update)`;
     }
 
     function showItems() {
@@ -108,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if(initialNumItems < showN) {
             // range(start, cutoff)
             for(const i of range(initialNumItems, showN)) {
-                shown.appendChild(tag('li', i.toString()));
+                shown.append(tag('li', i.toString()));
             }
         } else if (initialNumItems > showN) {
             const numToRemove = initialNumItems - showN;
@@ -119,9 +122,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         updateInfoDisplay(children.length, showN); 
     }
+
     nItems.addEventListener("input", () => {
-        updateInfoDisplay(shown.children.length , nItems.value);
-    })
+        updateInfoDisplay(shown.children.length, nItems.value);
+    });
     button.addEventListener("click", showItems);
     showItems();
 });

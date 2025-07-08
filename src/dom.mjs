@@ -77,21 +77,18 @@ export function query(selector, root = document) {
  */
 export function resolve(elementOrSelector, root = document) {
     let element = null;
-    if(elementOrSelector) {
-        if(elementOrSelector['tagName'] !== undefined) {
-            if(! Object.is(root, document)) {
-                throw new RangeError(
-                    `Cannot run an element (${JSON.stringify(elementOrSelector)}) as a query against node ${JSON.stringify(root)}`);
-            }
-            element = elementOrSelector;
+    if(elementOrSelector?.tagName !== undefined) {
+        if(! Object.is(root, document)) {
+            throw new RangeError(
+                `Cannot run an element (${JSON.stringify(elementOrSelector)}) as a query against node ${JSON.stringify(root)}`);
         }
-        else if (typeof elementOrSelector === 'string') {
-            element = query(elementOrSelector, root);
-        }
-    } else {
-       throw new TypeError(
-        `elementOrSelector expects a selector string or an Element, not ${JSON.stringify(elementOrSelector)}`);
+        element = elementOrSelector;
     }
+    else if (typeof elementOrSelector === 'string') {
+        element = query(elementOrSelector, root);
+    }
+    if(! element) throw new TypeError(
+        `elementOrSelector expects a selector string or an Element, not ${JSON.stringify(elementOrSelector)}`);
     return element;
 }
 
@@ -112,6 +109,12 @@ export function text(asString) {
 /**
  * @description Attach all elements in `iterable` to `element`.
  *
+ * **⚠️ [`Element.append()`][append] may be a better choice.**
+ *
+ * Although not yet depercated, this method may be marked for removal in the future.
+ *
+ * [append]: https://developer.mozilla.org/en-US/docs/Web/API/Element/append
+ *
  * **Example**
  *
  * ```javascript
@@ -125,9 +128,7 @@ export function text(asString) {
  * @param {Iterable<HTMLElement|Text>} newChildren The iterable
  */
 export function appendAll(parent, newChildren) {
-    for(const item of newChildren) {
-        parent.appendChild(item);
-    }
+    parent.append(...newChildren);
 }
 
 /**
@@ -165,7 +166,7 @@ export function nest(elementOrSelector, iterableOrCallable) {
         ? iterableOrCallable(elementOrSelector)
         : iterableOrCallable;
     if(! hasSymbolIterator(iterable)) throw new TypeError(`Could not resolve iterable for ${JSON.stringify(iterableOrCallable)}`);
-    appendAll(element, iterable);
+    element.append(...iterable);
 
     return element;
 }
@@ -203,14 +204,14 @@ export function tag(name, contents = null) {
     const element = document.createElement(name);
     if(contents !== null) {
         if(typeof contents === 'string') {
-            element.appendChild(document.createTextNode(contents));
+            element.append(document.createTextNode(contents));
         }
         else if(contents instanceof Element) {
-            element.appendChild(contents);
+            element.append(contents);
         }
         // inlined for speed
         else if (contents[Symbol.iterator] !== undefined) {
-            appendAll(element, contents)
+            element.append(element, ...contents);
         } else {
             throw TypeError(`Unexpected contents value: ${JSON.stringify(contents)} is not a string, Text, or iterable of nodes.`);
         }
