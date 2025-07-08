@@ -23,9 +23,7 @@
 import { positiveMod } from "./operators.mjs";
 
 function* _asGeneratorInner(iterable) {
-    for(const item of iterable) {
-        yield item;
-    }
+    yield* iterable;
 }
 
 /**
@@ -43,12 +41,9 @@ export const EMPTY_GENERATOR = (function*() {})();
  * @returns {boolean} Whether the item is iterable.
  */
 export function hasSymbolIterator(iterable) {
-    return ! (
-            (iterable === undefined)
-            || (iterable === null)
-            || (typeof iterable[Symbol.iterator] !== 'function')
-    );
+    return typeof iterable?.[Symbol.iterator] === 'function';
 }
+
 /**
  * @summary Return a generator over the passed iterable.
  *
@@ -67,7 +62,7 @@ export function hasSymbolIterator(iterable) {
 export function asGenerator(iterable) {
     if(! hasSymbolIterator(iterable)) {
         throw new TypeError(`No Symbol.iterator on ${JSON.stringify(iterable)}`);
-    } else if (('length' in iterable) && (iterable.length === 0)) {
+    } else if (iterable?.length === 0) {
         return EMPTY_GENERATOR;
     } else {
         return _asGeneratorInner(iterable);
@@ -90,6 +85,7 @@ function* _rangeGenerator(beginEndStep) {
     for (var i = begin; (end - i) > 0; i += step)
         yield i;
 }
+
 
 /**
  * @public
@@ -141,6 +137,7 @@ export function range(...rest) {
         slots.end   = rest[1];
         if  (len === 3) slots.step = rest[2];
     }
+    if(slots.step === 0) throw new RangeError(`Can't have step === 0`);
 
     //Instantiate the generator
     return _rangeGenerator(slots);
@@ -152,10 +149,10 @@ export function range(...rest) {
  * @param {Iterable<T>} iterable
  * @yields {Array<Number, T>}
  */
-function* _enumerateGenerator(iterable) {
-    let i = 0;
+function* _enumerateGenerator(iterable, start) {
+    let i = start;
     for(const v of iterable) {
-        yield [i, v];
+        yield [i++, v];
     }
 }
 
@@ -184,11 +181,15 @@ function* _enumerateGenerator(iterable) {
  * @param {Iterable<T>} iterable
  * @returns {Generator<Array<Number, T>>} A generator yielding `[index, value]` pairs.
  */
-export function enumerate(iterable) {
+export function enumerate(iterable, start = 0) {
     if(! hasSymbolIterator(iterable) ) throw new TypeError(
-        `${JSON.stringify(iterable)} lacks a Symbol.iterator value`
-    )
-    return _enumerateGenerator(iterable);
+        `${JSON.stringify(iterable)} lacks a Symbol.iterator value`);
+    let problem;
+    if (typeof start !== 'number') problem = TypeError;
+    else if (! Number.isInteger(start)) problem = RangeError;
+    if(problem) throw new problem(
+        `start must be an integer, not ${JSON.stringify(start)}`);
+    return _enumerateGenerator(iterable, start);
 }
 
 
@@ -199,11 +200,7 @@ export function enumerate(iterable) {
  * @param {Iterable<Iterable<T>>} iterables 
  */
 function* _chainGenerator(iterables) {
-    for(const it of iterables) {
-        for(const item of it) {
-            yield item;
-        }
-    }
+    for(const it of iterables) yield* it;
 }
 
 
@@ -234,32 +231,12 @@ export function chain(...iterables) {
 
 /**
  * @ignore
- * @summary Pushes each item in `iterable` to `temp` before it yields it.
- * @param {Iterable<T>} iterable
- * @param {Array<T>} temp
- *
- */
-function* _tempPusher(iterable, temp) {
-    for(const item of iterable) {
-        temp.push(item);
-        yield item;
-    }
-}
-
-
-/**
- * @ignore
  * @summary Repeats `iterable`'s contents forever.
  * @param {Iterable<T>} iterable 
  */
 function* _cycleGen(iterable) {
-    const temp = [];
-    for(const item of _tempPusher(iterable, temp)) {
-        yield item;
-    }
-    while(true) {
-        for(const item of temp) yield item;
-    }  
+    const temp = Array.from(iterable);
+    while(true) yield* temp;
 }
 
 
@@ -297,14 +274,9 @@ export function cycle(iterable) {
  * @param {*} n
  */
 function* _repeatGenerator(iterable, n) {
-    const temp = [];
-    for(const item of _tempPusher(iterable, temp)) {
-        yield item;
-    }
-    for(let i = 1; i < n; i++) {
-        for(const item of temp) {
-            yield item;
-        }
+    const temp = Array.from(iterable);
+    for(let i = 0; i < n; i++) {
+        yield* temp;
     }
 }
 
@@ -543,12 +515,9 @@ export function product(...iterables) {
     // Convert the iterables to dial-like automodulo-ing helpers
     const digits = [];
     for(const [i, iterable] of iterables.entries()) {
-        // inlined for speed
-        if ((iterable === undefined)
-            || (iterable === null)
-            || (typeof iterable[Symbol.iterator] !== 'function')
-        ) throw TypeError(
-            `argument ${i} does not appear to be iterable: ${JSON.stringify(iterable)}`);
+        if ((typeof iterable?.[Symbol.iterator]) !== 'function')
+            throw new TypeError(
+                `argument ${i} does not appear to be iterable: ${JSON.stringify(iterable)}`);
 
          const digit = new DigitLike(...iterable);
          digits.push(digit);

@@ -18,6 +18,16 @@ describe(range, () => {
                 });
             }
         });
+        describe('rejects step === 0', () => {
+            for(const start of [-5, 0, 10]) {
+                for(const stop of [-10, 0, 7]) {
+                    const badArgs=[start, stop, 0];
+                    it(`rejects ${JSON.stringify(badArgs)}`, () => {
+                        expect(() =>range(...badArgs)).toThrow(RangeError);
+                    });
+                }
+            }
+        })
 
         describe(`it throws TypeError for any non-Numbers`, () => {
             for(let i = 0; i < 3; i++) {
@@ -49,5 +59,16 @@ describe(range, () => {
             })
         }
     });
-
+    describe('handles negatives', () => {
+        const expectedResult = [0, -1, -2, -3, -4];
+        const args = [0, -5, -1];
+        it(`generates appropriate steps for negatives ${JSON.stringify(args)}`, () => {
+            const asArray = Array.from(range(...args));
+            for(const [i, value] of asArray.entries()) {
+                expect(`${i} holds ${value}`, () => {
+                    expectedResult[i] === value;
+                });
+            }
+        });
+    })
 })
