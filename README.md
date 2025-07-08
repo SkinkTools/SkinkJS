@@ -9,7 +9,7 @@
 Python-inspired helper functions for JavaScript.
 
 <!-- JsDoc does not seem to support callouts so we'll go with this. :( -->
-|️ ⚠️ Version 0.0.1 (Expect rough edges) |
+|️ ⚠️ Version 0.0.2 (Expect rough edges) |
 |--------------------------------------|
 
 ## Not a Framework

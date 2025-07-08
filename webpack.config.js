@@ -1,7 +1,9 @@
 const path = require("path")
 const webpack = require("webpack");
 
-const skinkVersion = '0.0.1'
+const packageData = require(path.resolve(__dirname, './package.json'));
+
+const skinkVersion = packageData.version;
 const bannerLines = [
   `SkinkJS (v${skinkVersion}, minified)`,
   "By pushfoo  (https://github.com/pushfoo)",
