@@ -30,7 +30,7 @@ for(const factory of [range, function array(n) {return Array.from(range(n))},  f
 
     it(`it does so for ${factory.name}`, () => {
         for(const iterLength of [1, 50, 100]) {
-                var i = 0 ;
+                let i = 0 ;
                 const iterable = factory(iterLength);
                 for (const value of product(iterable)) {
                     // TODO: carefully evaluate this?

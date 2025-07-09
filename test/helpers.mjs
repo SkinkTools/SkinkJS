@@ -40,7 +40,7 @@ export function ensureNumber() {
 
 export function nodeVersionIsGt(...rest) {
     ensureNumber();
-    for (var i = 0; i < rest.length; i++) {
+    for (let i = 0; i < rest.length; i++) {
         if (versionNumber[i] > rest[i]) return true;
     }
     return false;
